@@ -27,6 +27,11 @@ SOURCES += \
     main.cpp \
     GUI/editor.cpp \
     GUI/directoryviewer.cpp \
+    Core/data_tree.cpp \
+    Core/files_converter.cpp \
+    Core/Block/block.cpp \
+    Core/Block/objecy_block.cpp \
+    Core/Block/string_block.cpp \
     Highlighter/pythonhighlighter.cpp
 
 HEADERS += \
@@ -40,6 +45,11 @@ HEADERS += \
     GUI/directoryviewer.h \
     Highlighter/pythonHighlighter.h \
     GUI/xml_Editor.h \
+    Core/data_tree.h \
+    Core/files_converter.h \
+    Core/Block/block.h \
+    Core/Block/objecy_block.h \
+    Core/Block/string_block.h \
     Highlighter/xmlHighlighter.h
 
 RESOURCES += \
