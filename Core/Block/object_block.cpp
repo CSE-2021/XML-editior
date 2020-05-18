@@ -1,21 +1,29 @@
 #include "object_block.h"
 
-ObjectBlock::ObjectBlock(QString name) : Block{name} {}
+ObjectBlock::ObjectBlock(QString name) : Block{name} {
+    blocks = new QVector<Block *>();
+    attributes = new Map<QString, QString>();
+}
 
 QVector<Block *> *ObjectBlock::getValue()
 {
-    return &blocks;
+    return blocks;
 }
 
 void ObjectBlock::addBlock(Block *blockPtr)
 {
-    blocks.push_back(blockPtr);
+    blocks->push_back(blockPtr);
+}
+
+Map<QString, QString> *ObjectBlock::getAttributes() {
+    return attributes;
 }
 
 ObjectBlock::~ObjectBlock()
 {
-    for (int i = 0; i < blocks.size(); i++)
+    for (int i = 0; i < blocks->size(); i++)
     {
-        delete blocks[i];
+        delete (*blocks)[i];
     }
+    delete blocks;
 }

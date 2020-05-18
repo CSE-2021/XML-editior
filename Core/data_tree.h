@@ -9,14 +9,14 @@ class DataTree
 {
 private:
     Block *root = nullptr;
-    static QString getText(QFile *inFileStream);
     void parseText(QString fileText);
+    static QString getText(QFile *inFileStream);
     QVector<QString> *getPartsOfText(QString fileText);
     void buildTreeFromParts(QVector<QString> *);
 
 public:
     DataTree(QString fileText);
-    static DataTree *readFile(Qstring inFileName);
+    static DataTree *readFile(QString inFileName);
     DataTree(QFile *inFileStream);
     Block *getRoot();
     ~DataTree();

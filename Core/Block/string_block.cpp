@@ -7,6 +7,10 @@ QVector<Block *> *StringBlock::getValue()
     return nullptr;
 }
 
+Map<QString, QString> *StringBlock::getAttributes() {
+    return nullptr;
+}
+
 StringBlock::~StringBlock()
 {
 }

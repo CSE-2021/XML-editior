@@ -30,7 +30,7 @@ SOURCES += \
     Core/data_tree.cpp \
     Core/files_converter.cpp \
     Core/Block/block.cpp \
-    Core/Block/objecy_block.cpp \
+    Core/Block/object_block.cpp \
     Core/Block/string_block.cpp \
     Highlighter/pythonhighlighter.cpp
 
@@ -48,9 +48,10 @@ HEADERS += \
     Core/data_tree.h \
     Core/files_converter.h \
     Core/Block/block.h \
-    Core/Block/objecy_block.h \
+    Core/Block/object_block.h \
     Core/Block/string_block.h \
-    Highlighter/xmlHighlighter.h
+    Highlighter/xmlHighlighter.h \
+    Data_Structures/map_vector.h
 
 RESOURCES += \
     resources.qrc

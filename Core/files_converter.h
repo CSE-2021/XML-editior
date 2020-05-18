@@ -17,6 +17,7 @@ private:
     unsigned int indentCounter;
 
     void generateJSONObject(Block *currentBlock, bool isLast);
+    void generateIndentation();
 
 public:
     FilesConverter(DataTree *dataTree, QString fileName);

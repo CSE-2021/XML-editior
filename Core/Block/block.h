@@ -3,6 +3,7 @@
 
 #include <QString>
 #include <QVector>
+#include "../../Data_Structures/map_vector.h"
 
 using namespace std;
 
@@ -16,6 +17,7 @@ public:
     void setName(QString name);
     QString getName();
     virtual QVector<Block *> *getValue() = 0;
+    virtual Map<QString, QString> *getAttributes() = 0;
     virtual ~Block();
 };
 

@@ -1,4 +1,5 @@
 #include "data_tree.h"
+#include <QStringList>
 #include <QTextStream>
 #include <QStack>
 
@@ -12,7 +13,7 @@ DataTree::DataTree(QFile *inFileStream)
     parseText(getText(inFileStream));
 }
 
-DataTree *DataTree::readFile(Qstring inFileName)
+DataTree *DataTree::readFile(QString inFileName)
 {
     QFile *inFileStream = new QFile(inFileName);
     inFileStream->open(QIODevice::ReadOnly | QIODevice::Text);
@@ -61,7 +62,7 @@ QVector<QString> *DataTree::getPartsOfText(const QString fileText)
         {
             parts->push_back(temp);
             temp = "<";
-            letterExist = false;
+            letterExist = true;
         }
         // push the part inside parts in case the current tag is closed
         else if (currentLetter == '>')
@@ -98,34 +99,37 @@ void DataTree::buildTreeFromParts(QVector<QString> *parts)
             // It is of course a string
             blocksStack.top()->getValue()->push_back(new StringBlock(part));
         }
+        // In case of ending tag
+        else if (part.mid(0, 2) == "</")
+        {
+            // In case there was no value between the start tag and the end tag
+            if ((*parts)[i - 1][0] == '<' && (*parts)[i - 1][1] != '/')
+            {
+                blocksStack.top()->getValue()->push_back(new StringBlock(""));
+            }
+            blocksStack.pop();
+        }
+        // In case of start tag
+        else if (part[0] == '<')
+        {
+            part = part.mid(1, (*parts)[i].length() - 2);
+            QStringList partsOfStartTag = part.split(' ', QString::SkipEmptyParts);
+            // Create a new block and take the tag name from the tag string
+            Block *temp = new ObjectBlock(partsOfStartTag[0]);
+            QStringList partsOfEachAttribute;
+            for (int i = 1; i < partsOfStartTag.size(); i++) {
+                partsOfEachAttribute = partsOfStartTag[i].split('=');
+                temp->getAttributes()->insert(partsOfEachAttribute[0], partsOfEachAttribute[1].mid(1, partsOfEachAttribute[1].length() - 2));
+            }
+            // Put the new tag inside the old tag
+            blocksStack.top()->getValue()->push_back(temp);
+            // push the tag into the stack
+            blocksStack.push(temp);
+        }
+        // In case of a string(value)
         else
         {
-            // In case of ending tag
-            if (part.mid(0, 2) == "</")
-            {
-                // In case there was no value between the start tag and the end tag
-                if ((*parts)[i - 1][0] == '<' && (*parts)[i - 1][1] != '/')
-                {
-                    blocksStack.top()->getValue()->push_back(new StringBlock(""));
-                }
-                blocksStack.pop();
-            }
-            // In case of start tag
-            else if (part[0] == '<')
-            {
-                Block *temp;
-                // Create a new block and take the tag name from the tag string
-                temp = new ObjectBlock((*parts)[i].mid(1, (*parts)[i].length() - 2));
-                // Put the new tag inside the old tag
-                blocksStack.top()->getValue()->push_back(temp);
-                // push the tag into the stack
-                blocksStack.push(temp);
-            }
-            // In case of a string(value)
-            else
-            {
-                blocksStack.top()->getValue()->push_back(new StringBlock(part));
-            }
+            blocksStack.top()->getValue()->push_back(new StringBlock(part));
         }
     }
 }

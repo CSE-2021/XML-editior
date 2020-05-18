@@ -5,6 +5,7 @@
 #include <QVector>
 #include <QDebug>
 #include <QStack>
+#include <vector>
 #include "files_converter.h"
 
 FilesConverter::FilesConverter(DataTree *dataTree, QString fileName) : dataTree{dataTree}
@@ -39,29 +40,39 @@ void FilesConverter::generateJSONFile()
 
 void FilesConverter::generateJSONObject(Block *currentBlock, bool isLast)
 {
-    if (currentBlock->getValue() == nullptr)
-    {
-        (*out) << '"' << currentBlock->getName() << "\"" << (isLast ? "" : ",") << endl;
-    }
-    else
+    if (currentBlock->getValue() != nullptr)
     {
         if (currentBlock->getValue()->size() == 1 && (*(currentBlock->getValue()))[0]->getValue() == nullptr)
         {
-            for (unsigned i = 0; i < indentCounter; i++)
-            {
-                (*out) << '\t';
-            }
+            generateIndentation();
             (*out) << '"' << currentBlock->getName() << "\": ";
-            generateJSONObject((*(currentBlock->getValue()))[0], isLast);
+            if (currentBlock->getAttributes()->size() == 0) {
+                (*out) << '"' << (*(currentBlock->getValue()))[0]->getName() << "\"" << (isLast ? "" : ",") << endl;
+            } else {
+                (*out) << "{" << endl;
+                indentCounter++;
+                vector<QString> keys = currentBlock->getAttributes()->keys();
+                for (size_t i = 0; i < currentBlock->getAttributes()->size(); i++) {
+                    generateIndentation();
+                    (*out) << "\"@" << keys[i] << "\": \"" << currentBlock->getAttributes()->at(i) << "\",\n";
+                }
+                generateIndentation();
+                (*out) << "\"#text\": \"" << (*(currentBlock->getValue()))[0]->getName() << "\"\n";
+                indentCounter--;
+                generateIndentation();
+                (*out) << "}" << (isLast ? "" : ",") << endl;
+            }
         }
         else
         {
-            for (unsigned int i = 0; i < indentCounter; i++)
-            {
-                (*out) << '\t';
-            }
+            generateIndentation();
             (*out) << '"' << currentBlock->getName() << "\": {" << endl;
             indentCounter++;
+            vector<QString> keys = currentBlock->getAttributes()->keys();
+            for (size_t i = 0; i < currentBlock->getAttributes()->size(); i++) {
+                generateIndentation();
+                (*out) << "\"@" << keys[i] << "\": \"" << currentBlock->getAttributes()->at(i) << "\",\n";
+            }
             for (int i = 0; i < currentBlock->getValue()->size(); i++)
             {
 
@@ -75,14 +86,19 @@ void FilesConverter::generateJSONObject(Block *currentBlock, bool isLast)
                 }
             }
             indentCounter--;
-            for (unsigned int i = 0; i < indentCounter; i++)
-            {
-                (*out) << '\t';
-            }
+            generateIndentation();
             (*out) << "}" << (isLast ? "" : ",") << endl;
         }
     }
 }
+
+void FilesConverter::generateIndentation() {
+    for (unsigned int i = 0; i < indentCounter; i++)
+    {
+        (*out) << '\t';
+    }
+}
+
 
 FilesConverter::~FilesConverter()
 {

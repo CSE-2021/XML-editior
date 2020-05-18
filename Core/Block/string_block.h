@@ -10,6 +10,7 @@ class StringBlock : public Block
 public:
     StringBlock(QString name);
     virtual QVector<Block *> *getValue();
+    virtual Map<QString, QString> *getAttributes();
     virtual ~StringBlock();
 };
 
