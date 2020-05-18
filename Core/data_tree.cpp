@@ -2,11 +2,9 @@
 #include <QTextStream>
 #include <QStack>
 
-DataTree::DataTree(const QString inFileName)
+DataTree::DataTree(QString fileText)
 {
-    QFile *inFileStream = new QFile(inFileName);
-    inFileStream->open(QIODevice::ReadOnly | QIODevice::Text);
-    parseText(getText(inFileStream));
+    parseText(fileText);
 }
 
 DataTree::DataTree(QFile *inFileStream)
@@ -14,12 +12,22 @@ DataTree::DataTree(QFile *inFileStream)
     parseText(getText(inFileStream));
 }
 
+DataTree *DataTree::readFile(Qstring inFileName)
+{
+    QFile *inFileStream = new QFile(inFileName);
+    inFileStream->open(QIODevice::ReadOnly | QIODevice::Text);
+    QString fileText = getText(inFileStream);
+    delete inFileStream;
+    DataTree *tree = new DataTree(fileText);
+    return tree;
+}
+
 Block *DataTree::getRoot()
 {
     return this->root;
 }
 
-const QString DataTree::getText(QFile *inFileStream)
+QString DataTree::getText(QFile *inFileStream)
 {
     QString fileText = "";
     QString temp;
