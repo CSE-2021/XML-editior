@@ -5,10 +5,11 @@
 #include <QVector>
 #include "../../Data_Structures/map_vector.h"
 
-typedef enum TagType {
+typedef enum TagType
+{
     NORMAL,
-    START,
-    END,
+    INFO,
+    SELF_ENDED,
     STRING
 } TagType;
 

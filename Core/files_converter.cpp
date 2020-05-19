@@ -40,19 +40,23 @@ void FilesConverter::generateJSONFile()
 
 void FilesConverter::generateJSONObject(Block *currentBlock, bool isLast)
 {
-    if (currentBlock->getValue() != nullptr && currentBlock->getTagType() != START && currentBlock->getTagType() != END)
+    if (currentBlock->getValue() != nullptr && currentBlock->getTagType() != TagType::INFO && currentBlock->getTagType() != TagType::SELF_ENDED)
     {
         if (currentBlock->getValue()->size() == 1 && (*(currentBlock->getValue()))[0]->getValue() == nullptr)
         {
             generateIndentation();
             (*out) << '"' << currentBlock->getName() << "\": ";
-            if (currentBlock->getAttributes()->size() == 0) {
+            if (currentBlock->getAttributes()->size() == 0)
+            {
                 (*out) << '"' << (*(currentBlock->getValue()))[0]->getName() << "\"" << (isLast ? "" : ",") << endl;
-            } else {
+            }
+            else
+            {
                 (*out) << "{" << endl;
                 indentCounter++;
                 vector<QString> keys = currentBlock->getAttributes()->keys();
-                for (size_t i = 0; i < currentBlock->getAttributes()->size(); i++) {
+                for (size_t i = 0; i < currentBlock->getAttributes()->size(); i++)
+                {
                     generateIndentation();
                     (*out) << "\"@" << keys[i] << "\": \"" << currentBlock->getAttributes()->at(i) << "\",\n";
                 }
@@ -69,7 +73,8 @@ void FilesConverter::generateJSONObject(Block *currentBlock, bool isLast)
             (*out) << '"' << currentBlock->getName() << "\": {" << endl;
             indentCounter++;
             vector<QString> keys = currentBlock->getAttributes()->keys();
-            for (size_t i = 0; i < currentBlock->getAttributes()->size(); i++) {
+            for (size_t i = 0; i < currentBlock->getAttributes()->size(); i++)
+            {
                 generateIndentation();
                 (*out) << "\"@" << keys[i] << "\": \"" << currentBlock->getAttributes()->at(i) << "\",\n";
             }
@@ -89,16 +94,22 @@ void FilesConverter::generateJSONObject(Block *currentBlock, bool isLast)
             generateIndentation();
             (*out) << "}" << (isLast ? "" : ",") << endl;
         }
-    } else if (currentBlock->getTagType() == END) {
+    }
+    else if (currentBlock->getTagType() == TagType::SELF_ENDED)
+    {
         generateIndentation();
         (*out) << '"' << currentBlock->getName() << "\": ";
-        if (currentBlock->getAttributes()->size() == 0) {
+        if (currentBlock->getAttributes()->size() == 0)
+        {
             (*out) << '"' << (*(currentBlock->getValue()))[0]->getName() << "\"" << (isLast ? "" : ",") << endl;
-        } else {
+        }
+        else
+        {
             (*out) << "{" << endl;
             indentCounter++;
             vector<QString> keys = currentBlock->getAttributes()->keys();
-            for (size_t i = 0; i < currentBlock->getAttributes()->size(); i++) {
+            for (size_t i = 0; i < currentBlock->getAttributes()->size(); i++)
+            {
                 generateIndentation();
                 (*out) << "\"@" << keys[i] << "\": \"" << currentBlock->getAttributes()->at(i) << "\"" << (i == currentBlock->getAttributes()->size() - 1 ? "" : ",") << "\n";
             }
@@ -109,13 +120,13 @@ void FilesConverter::generateJSONObject(Block *currentBlock, bool isLast)
     }
 }
 
-void FilesConverter::generateIndentation() {
+void FilesConverter::generateIndentation()
+{
     for (unsigned int i = 0; i < indentCounter; i++)
     {
         (*out) << '\t';
     }
 }
-
 
 FilesConverter::~FilesConverter()
 {
