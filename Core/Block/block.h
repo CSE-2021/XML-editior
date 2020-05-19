@@ -5,17 +5,25 @@
 #include <QVector>
 #include "../../Data_Structures/map_vector.h"
 
-using namespace std;
+typedef enum TagType {
+    NORMAL,
+    START,
+    END,
+    STRING
+} TagType;
 
 class Block
 {
 protected:
     QString name;
+    TagType tagType;
 
 public:
-    Block(QString name);
+    Block(QString name, TagType tagType);
     void setName(QString name);
     QString getName();
+    void setTagType(TagType tagType);
+    TagType getTagType();
     virtual QVector<Block *> *getValue() = 0;
     virtual Map<QString, QString> *getAttributes() = 0;
     virtual ~Block();

@@ -2,6 +2,7 @@
 #define DATA_TREE_H_
 
 #include <QFile>
+#include <QStringList>
 #include "Block/object_block.h"
 #include "Block/string_block.h"
 
@@ -13,6 +14,7 @@ private:
     static QString getText(QFile *inFileStream);
     QVector<QString> *getPartsOfText(QString fileText);
     void buildTreeFromParts(QVector<QString> *);
+    QStringList getPartsOfStartTag(QString startTag);
 
 public:
     DataTree(QString fileText);

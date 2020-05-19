@@ -13,7 +13,7 @@ private:
     Map<QString, QString> *attributes;
 
 public:
-    ObjectBlock(QString name);
+    ObjectBlock(QString name, TagType tagType);
     virtual QVector<Block *> *getValue();
     virtual Map<QString, QString> *getAttributes();
     void addBlock(Block *blockPtr);

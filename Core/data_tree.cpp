@@ -2,6 +2,8 @@
 #include <QStringList>
 #include <QTextStream>
 #include <QStack>
+#include <QStringBuilder>
+#include <QDebug>
 
 DataTree::DataTree(QString fileText)
 {
@@ -85,7 +87,7 @@ QVector<QString> *DataTree::getPartsOfText(const QString fileText)
 void DataTree::buildTreeFromParts(QVector<QString> *parts)
 {
     // root is the root block of the tree
-    root = new ObjectBlock("root");
+    root = new ObjectBlock("root", TagType::NORMAL);
     // A stack to store the blocks and which levels they are in
     QStack<Block *> blocksStack;
     blocksStack.push(root);
@@ -112,19 +114,31 @@ void DataTree::buildTreeFromParts(QVector<QString> *parts)
         // In case of start tag
         else if (part[0] == '<')
         {
-            part = part.mid(1, (*parts)[i].length() - 2);
-            QStringList partsOfStartTag = part.split(' ', QString::SkipEmptyParts);
+//            qDebug() << part;
+//            part = part.mid(1, (*parts)[i].length() - 2);
+//            QStringList partsOfStartTag = part.split(' ', QString::SkipEmptyParts);
+            QStringList partsOfStartTag = getPartsOfStartTag(part);
             // Create a new block and take the tag name from the tag string
-            Block *temp = new ObjectBlock(partsOfStartTag[0]);
-            QStringList partsOfEachAttribute;
+            Block *temp = new ObjectBlock(partsOfStartTag[0], TagType::NORMAL);
+//            qDebug() << partsOfStartTag[0];
             for (int i = 1; i < partsOfStartTag.size(); i++) {
-                partsOfEachAttribute = partsOfStartTag[i].split('=');
-                temp->getAttributes()->insert(partsOfEachAttribute[0], partsOfEachAttribute[1].mid(1, partsOfEachAttribute[1].length() - 2));
+                if (i % 2 == 1 && partsOfStartTag[i] != "/") {
+//                    qDebug() << partsOfStartTag[i];
+//                    qDebug() << partsOfStartTag[i + 1];
+                    temp->getAttributes()->insert(partsOfStartTag[i], partsOfStartTag[i + 1]);
+                } else if (partsOfStartTag[i] == "/") {
+                    temp->setTagType(TagType::END);
+                }
             }
             // Put the new tag inside the old tag
             blocksStack.top()->getValue()->push_back(temp);
-            // push the tag into the stack
-            blocksStack.push(temp);
+            // Check if it is not the "xml" tag or "xml-model" tag or an ending solo tag
+            if (partsOfStartTag[0] != "xml" && partsOfStartTag[0] != "xml-model" && temp->getTagType() != TagType::END) {
+                // push the tag into the stack
+                blocksStack.push(temp);
+            } else if (temp->getTagType() != TagType::END) {
+                temp->setTagType(TagType::START);
+            }
         }
         // In case of a string(value)
         else
@@ -132,6 +146,42 @@ void DataTree::buildTreeFromParts(QVector<QString> *parts)
             blocksStack.top()->getValue()->push_back(new StringBlock(part));
         }
     }
+}
+
+QStringList DataTree::getPartsOfStartTag(QString startTag)
+{
+    startTag = startTag.mid(1, startTag.length() - 1);
+    QStringList parts;
+    QString temp = QString("");
+    bool insideAttributeValue = false;
+    for (QChar letter: startTag) {
+        if(letter == ' ') {
+            if (insideAttributeValue) {
+                temp += letter;
+            } else if (temp != "") {
+                parts.append(temp);
+                temp = "";
+            }
+        } else if (letter == '"') {
+            if (insideAttributeValue) {
+                parts.append(temp);
+                temp = "";
+            }
+            insideAttributeValue = !insideAttributeValue;
+        } else if (letter == '=') {
+            parts.append(temp);
+            temp = "";
+        } else if (letter == '?' && temp == "") {
+            continue;
+        } else if (letter == '>' && temp != "") {
+            parts.append(temp);
+        } else if (letter == '/' && !insideAttributeValue) {
+            parts.append(QString("/"));
+        } else {
+            temp += letter;
+        }
+    }
+    return parts;
 }
 
 DataTree::~DataTree()

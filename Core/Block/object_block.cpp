@@ -1,6 +1,6 @@
 #include "object_block.h"
 
-ObjectBlock::ObjectBlock(QString name) : Block{name} {
+ObjectBlock::ObjectBlock(QString name, TagType tagType) : Block{name, tagType} {
     blocks = new QVector<Block *>();
     attributes = new Map<QString, QString>();
 }
