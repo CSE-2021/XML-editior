@@ -1,6 +1,7 @@
 #include "GUI/xml_Editor.h"
 #include "Controllers/guiController.h"
 #include "Controllers/editorcontroller.h"
+#include "Data_Structures/trie.h"
 
 #include <QApplication>
 

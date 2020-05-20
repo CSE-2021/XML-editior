@@ -76,6 +76,8 @@ U Map<T, U>::value(const T &key) const
             return data[i].second;
         }
     }
+    U u;
+    return u;
 }
 
 template <typename T, typename U>
