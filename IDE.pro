@@ -38,6 +38,8 @@ HEADERS += \
     Controllers/editorcontroller.h \
     Controllers/guiController.h \
     Controllers/xmlcontroller.h \
+    Data_Structures/trie.h \
+    Data_Structures/trie_node.h \
     GUI/settings.h \
     Highlighter/highlighter.h \
     Highlighter/htmlHighlighter.h \
