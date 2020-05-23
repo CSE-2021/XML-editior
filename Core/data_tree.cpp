@@ -54,20 +54,27 @@ QVector<QString> *DataTree::getPartsOfText(const QString fileText)
     QVector<QString> *parts = new QVector<QString>();
     QString temp = "";
     bool letterExist = false;
+    bool inComment = false;
     QChar currentLetter;
     unsigned long length = fileText.length();
     for (unsigned long i = 0; i < length; i++)
     {
         currentLetter = fileText.at(i);
         // push the part inside parts in case a new tag(start tag or end tag) is found
-        if (currentLetter == '<' && temp != "")
+        if (currentLetter == '<')
         {
-            parts->push_back(temp);
-            temp = "<";
-            letterExist = true;
+            if (fileText.at(i + 1) == '!') {
+                inComment = true;
+            } else if (!inComment) {
+                if (temp != "") {
+                    parts->push_back(temp);
+                }
+                temp = "<";
+                letterExist = true;
+            }
         }
         // push the part inside parts in case the current tag is closed
-        else if (currentLetter == '>')
+        else if (currentLetter == '>' && !inComment)
         {
             temp += '>';
             parts->push_back(temp);
@@ -77,8 +84,15 @@ QVector<QString> *DataTree::getPartsOfText(const QString fileText)
         // add the current character to temp
         else if (letterExist || (currentLetter != ' ' && currentLetter != '\t' && currentLetter != '\n'))
         {
-            temp += fileText.at(i);
-            letterExist = true;
+            if (currentLetter == '-' && inComment)  {
+                if (fileText.mid(i, 3) == "-->") {
+                    inComment = false;
+                    i += 2;
+                }
+            } else if (!inComment) {
+                temp += fileText.at(i);
+                letterExist = true;
+            }
         }
     }
     return parts;
