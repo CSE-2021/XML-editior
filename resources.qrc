@@ -30,5 +30,7 @@
         <file>icons/run.png</file>
         <file>icons/Settings.png</file>
         <file>icons/xmlIcon.png</file>
+        <file>icons/beautify.png</file>
+        <file>icons/minify.png</file>
     </qresource>
 </RCC>

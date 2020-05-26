@@ -12,24 +12,24 @@
 #include <QStringList>
 #include <QSqlError>
 
-void databaseInitialization();
-
-
-class SQLiteClass
-{
+class SQLite{
 public:
-    SQLiteClass(QString dbName);
+    SQLite(QString);
+    SQLite(QString connName, QString dbName);
+    bool open();
+    bool open(QString path);
     QSqlQuery sql_getQuery();
     int sql_insert(QString table, QStringList columns, QStringList values);
     int sql_select(QString select, QString from, QString where);
     int sql_update(QString table, QStringList columns, QStringList values, QString where);
     int sql_delete(QString table, QString where);
     int sql_create(QString table, QStringList columns, QStringList types);
-    int sql_print();
     int sql_close();
 private:
-    QSqlQuery query;
     QSqlDatabase db;
+    QSqlQuery query;
+    QString path;
+    QString connName;
 
 };
 

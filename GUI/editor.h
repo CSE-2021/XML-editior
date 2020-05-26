@@ -27,6 +27,11 @@ public:
     QString textUnderCursor();
     ~Editor();
 
+// Made for xml editor project 2020 3rd Computer
+signals:
+    void beautify();
+    void minify();
+
 protected:
     void resizeEvent(QResizeEvent *event) override;
     void focusInEvent(QFocusEvent *e) override;

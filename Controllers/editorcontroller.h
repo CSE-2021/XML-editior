@@ -5,7 +5,8 @@
 #include "../GUI/editor.h"
 #include "../Highlighter/pythonHighlighter.h"
 #include "../Highlighter/xmlHighlighter.h"
-#include "xmlcontroller.h"
+#include "Langs/langcontroller.h"
+#include "Langs/xmlcontroller.h"
 #include <QObject>
 #include <QSyntaxHighlighter>
 #include <QAbstractItemModel>
@@ -17,10 +18,11 @@ public:
     typedef struct EditorFile{
         QString filePath = "";
         Editor *editor = nullptr;
+        LangController *langController = nullptr;
     } EditorFile;
 
     static void registerMainWindow(MainWindow*);
-    static void addEditor(QString path);
+    static bool addEditor(QString path);
     static void closeEditor(int index);
     static EditorFile getActiveEditorFile();
 
@@ -29,7 +31,7 @@ private:
     static QMap <QString, EditorFile*> activeFiles;
     static QPixmap Icon(QString &type);
     static QSyntaxHighlighter *Highlighter(QString &type);
-    static void setSyntaxController(QString &type, Editor *e, QString filePath);
+    static void setSyntaxController(QString &type, Editor *e, EditorFile *efile);
 
 
 };

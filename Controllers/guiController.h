@@ -22,6 +22,8 @@ private:
     static void openFile(QString);
     static void saveFile();
     static void showSettings();
+    static void beautify();
+    static void minify();
 };
 
 #endif // MAINCONTOLLER_H
