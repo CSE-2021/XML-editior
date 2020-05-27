@@ -63,7 +63,9 @@ QPixmap EditorController::Icon(QString &type){
     if(!type.compare("py")){
         return QPixmap(":/icons/icons/python.png");
     }else if(!type.compare("xml")){
-        return QPixmap(":/icons/icons/xmlIcon.png");
+        return QPixmap(":/icons/icons/xml.svg");
+    }else if(!type.compare("json")){
+        return QPixmap(":/icons/icons/json.svg");
     }else{
         return QPixmap(":/icons/icons/txt.png");
     }
@@ -74,6 +76,8 @@ QSyntaxHighlighter* EditorController::Highlighter(QString &type){
         return new class::PythonHighlighter();
     }else if(!type.compare("xml")){
         return new XMLHighlighter;
+    }else if(!type.compare("json")){
+        return new JSONHighlighter;
     }else{
         return nullptr;
     }
@@ -88,15 +92,8 @@ void EditorController::setSyntaxController(QString &type, Editor *e, EditorFile 
         connect(e, &Editor::textChanged, controller, &XMLController::onTextChanged);
         connect(e, &Editor::beautify, controller, &XMLController::beautify);
         connect(e, &Editor::minify, controller, &XMLController::minify);
+        connect(e, &Editor::showSynsetInfo, controller, &XMLController::showSynsetInfo);
+        connect(e, &Editor::convertToJson, controller, &XMLController::convert2JSON);
     }
 }
 
-void EditorController::showSynsetInfo(){
-    EditorFile efile = getActiveEditorFile();
-    if(efile.editor != nullptr){
-        QString fileName = efile.filePath.mid(efile.filePath.lastIndexOf("/")+1);
-        dynamic_cast<XMLController*>(efile.langController)->getBlockTrie();
-        SynsetInfo *s = new SynsetInfo(fileName);
-        s->show();
-    }
-}

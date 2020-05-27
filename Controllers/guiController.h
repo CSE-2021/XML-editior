@@ -24,6 +24,8 @@ private:
     static void showSettings();
     static void beautify();
     static void minify();
+    static void convert2JSON();
+    static void showSynsetInfo();
 };
 
 #endif // MAINCONTOLLER_H

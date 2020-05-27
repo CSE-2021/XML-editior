@@ -25,6 +25,7 @@ SOURCES += \
     Highlighter/highlighter.cpp \
     Highlighter/htmlhighlighter.cpp \
     GUI/xml_Editor.cpp \
+    Highlighter/jsonhighlighter.cpp \
     Highlighter/xmlHighlighter.cpp \
     main.cpp \
     GUI/editor.cpp \
@@ -48,6 +49,7 @@ HEADERS += \
     Highlighter/htmlHighlighter.h \
     GUI/editor.h \
     GUI/directoryviewer.h \
+    Highlighter/jsonhighlighter.h \
     Highlighter/pythonHighlighter.h \
     GUI/xml_Editor.h \
     sqliteDriver/sqlite.h \

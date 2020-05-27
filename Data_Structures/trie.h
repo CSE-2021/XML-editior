@@ -134,4 +134,6 @@ void Trie<T>::getStrings(TrieNode<T> *node, QString startString) {
     }
 }
 
+
+
 #endif // TRIE_H

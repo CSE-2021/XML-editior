@@ -13,7 +13,8 @@ void GUIContoller::start(){
     main->addToolBarButton(&saveFile, "Save",  QPixmap(":/icons/icons/save.png"));
     main->addToolBarButton(&minify, "Minify",  QPixmap(":/icons/icons/minify.png"));
     main->addToolBarButton(&beautify, "Beautify",  QPixmap(":/icons/icons/beautify.png"));
-    main->addToolBarButton(&EditorController::showSynsetInfo, "Info",  QPixmap());
+    main->addToolBarButton(&showSynsetInfo, "Info",  QPixmap(":/icons/icons/search.png"));
+    main->addToolBarButton(&convert2JSON, "Convert To Json",  QPixmap(":/icons/icons/convert.png"));
     main->addToolBarSpacer();
     main->addToolBarButton(&showSettings, "Settings",  QPixmap(":/icons/icons/Settings.png"));
 
@@ -72,6 +73,20 @@ void GUIContoller::beautify(){
     if(main->editorTabWidget->count()){
         EditorController::EditorFile ef = EditorController::getActiveEditorFile();
         emit(ef.editor->beautify());
+    }
+}
+
+void GUIContoller::convert2JSON(){
+    if(main->editorTabWidget->count()){
+        EditorController::EditorFile ef = EditorController::getActiveEditorFile();
+        emit(ef.editor->convertToJson());
+    }
+}
+
+void GUIContoller::showSynsetInfo(){
+    if(main->editorTabWidget->count()){
+        EditorController::EditorFile ef = EditorController::getActiveEditorFile();
+        emit(ef.editor->showSynsetInfo());
     }
 }
 

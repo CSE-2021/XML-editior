@@ -31,6 +31,8 @@ public:
 signals:
     void beautify();
     void minify();
+    void showSynsetInfo();
+    void convertToJson();
 
 protected:
     void resizeEvent(QResizeEvent *event) override;

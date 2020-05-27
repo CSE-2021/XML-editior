@@ -32,5 +32,10 @@
         <file>icons/xmlIcon.png</file>
         <file>icons/beautify.png</file>
         <file>icons/minify.png</file>
+        <file>icons/json.png</file>
+        <file>icons/convert.png</file>
+        <file>icons/search.png</file>
+        <file>icons/xml.svg</file>
+        <file>icons/json.svg</file>
     </qresource>
 </RCC>

@@ -5,13 +5,14 @@
 #include "../GUI/editor.h"
 #include "../Highlighter/pythonHighlighter.h"
 #include "../Highlighter/xmlHighlighter.h"
+#include "../Highlighter/jsonhighlighter.h"
 #include "Langs/langcontroller.h"
 #include "Langs/xmlcontroller.h"
-#include "GUI/synsetinfo.h"
 #include <QObject>
 #include <QSyntaxHighlighter>
 #include <QAbstractItemModel>
 #include <QMap>
+
 
 class EditorController : public QObject{
     Q_OBJECT
@@ -25,7 +26,6 @@ public:
     static void registerMainWindow(MainWindow*);
     static bool addEditor(QString path);
     static void closeEditor(int index);
-    static void showSynsetInfo();
     static EditorFile getActiveEditorFile();
 
 private:

@@ -4,8 +4,13 @@
 #include "langcontroller.h"
 #include "Core/data_tree.h"
 #include "Core/Block/block.h"
+#include "Core/files_converter.h"
 #include "Data_Structures/map_vector.h"
 #include "Data_Structures/trie.h"
+#include "GUI/synsetinfo.h"
+#include <QList>
+#include <QApplication>
+#include <QDesktopWidget>
 
 class XMLController : public LangController{
     Q_OBJECT
@@ -15,8 +20,10 @@ public:
     void onTextChanged() override;
     void beautify();
     void minify();
+    void showSynsetInfo();
+    void convert2JSON();
     int getSynsetNumber();
-    Trie<Block*>* getBlockTrie();
+    Trie<QList<Block*>*>* getBlockTrie();
 private:
     typedef struct Info{
         QString tagName;

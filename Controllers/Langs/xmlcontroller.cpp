@@ -55,29 +55,50 @@ void XMLController::beautify(){
 
 }
 
-void traverseTree(Block *root, Trie<Block*> *trie){
+void traverseTree(Block *root, Trie<QList<Block*>*> *trie){
     if(!root->getName().compare("synset")){
         QString word;
         for(Block *b : *(root->getValue())){
             if(b->getName() == "word"){
                 word = (*(b->getValue()))[0]->getName();
-                break;
+                if(trie->contains(word)){
+                    trie->getValue(word)->append(root);
+                }else{
+                    QList<Block*> *l = new QList<Block*>;
+                    l->append(root);
+                    trie->add(word, l);
+                }
             }
         }
-        trie->add(word, root);
     }
     if(root->getValue() != nullptr)
         for(Block *b : *(root->getValue())) traverseTree(b, trie);
 }
 
-Trie<Block*>* XMLController::getBlockTrie(){
-    Trie<Block*> *trie = new Trie<Block*>();
+Trie<QList<Block*>*>* XMLController::getBlockTrie(){
+    Trie<QList<Block*>*>* trie = new Trie<QList<Block*>*>();
+    QString content = editor->document()->toPlainText();
+    DataTree *tree = new DataTree(content);
+    Block *root = tree->getRoot();
+    traverseTree(root, trie);
+    return trie;
+}
+
+void XMLController::showSynsetInfo(){
+    QString fileName = filePath.mid(filePath.lastIndexOf("/")+1);
+    Trie<QList<Block*>*>*t = this->getBlockTrie();
+    SynsetInfo *s = new SynsetInfo(t, fileName);
+    s->setFixedSize(400,600);
+    s->move(QApplication::desktop()->screen()->rect().center() - s->rect().center());
+    s->show();
+}
+
+void XMLController::convert2JSON(){
+    QString jsonName = filePath.mid(0, filePath.lastIndexOf("."))+".json";
     QString content = editor->document()->toPlainText();
     DataTree tree(content);
-    Block *root = tree.getRoot();
-    traverseTree(root, trie);
-    qDebug() << trie->getStrings();
-
+    FilesConverter f(&tree,jsonName);
+    f.generateJSONFile();
 }
 
 QString XMLController::_buildXML(QList<QPair<Info, int>> &queue){
