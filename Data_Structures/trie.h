@@ -134,6 +134,13 @@ void Trie<T>::getStrings(TrieNode<T> *node, QString startString) {
     }
 }
 
+template<typename T>
+QStringList *Trie<T>::getStrings() {
+    getStringsResult = new QStringList();
+    getStrings(root, "");
+    return getStringsResult;
+}
+
 
 
 #endif // TRIE_H

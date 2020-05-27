@@ -26,4 +26,5 @@ ObjectBlock::~ObjectBlock()
         delete (*blocks)[i];
     }
     delete blocks;
+    delete attributes;
 }
