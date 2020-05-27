@@ -21,6 +21,7 @@ SOURCES += \
     Controllers/guiController.cpp \
     Controllers/Langs/xmlcontroller.cpp \
     GUI/settings.cpp \
+    GUI/synsetinfo.cpp \
     Highlighter/highlighter.cpp \
     Highlighter/htmlhighlighter.cpp \
     GUI/xml_Editor.cpp \
@@ -42,6 +43,7 @@ HEADERS += \
     Controllers/guiController.h \
     Controllers/Langs/xmlcontroller.h \
     GUI/settings.h \
+    GUI/synsetinfo.h \
     Highlighter/highlighter.h \
     Highlighter/htmlHighlighter.h \
     GUI/editor.h \
@@ -56,6 +58,8 @@ HEADERS += \
     Core/Block/string_block.h \
     Highlighter/xmlHighlighter.h \
     Data_Structures/map_vector.h \
+    Data_Structures/trie.h \
+    Data_Structures/trie_node.h \
 
 RESOURCES += \
     resources.qrc

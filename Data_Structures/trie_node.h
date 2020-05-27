@@ -5,8 +5,7 @@
 #include "map_vector.h"
 
 template <typename T>
-class TrieNode
-{
+class TrieNode{
 private:
     QChar letter;
     T value;

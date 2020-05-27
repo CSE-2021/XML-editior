@@ -5,6 +5,7 @@
 #include "Core/data_tree.h"
 #include "Core/Block/block.h"
 #include "Data_Structures/map_vector.h"
+#include "Data_Structures/trie.h"
 
 class XMLController : public LangController{
     Q_OBJECT
@@ -15,6 +16,7 @@ public:
     void beautify();
     void minify();
     int getSynsetNumber();
+    Trie<Block*>* getBlockTrie();
 private:
     typedef struct Info{
         QString tagName;

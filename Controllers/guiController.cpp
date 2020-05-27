@@ -13,6 +13,7 @@ void GUIContoller::start(){
     main->addToolBarButton(&saveFile, "Save",  QPixmap(":/icons/icons/save.png"));
     main->addToolBarButton(&minify, "Minify",  QPixmap(":/icons/icons/minify.png"));
     main->addToolBarButton(&beautify, "Beautify",  QPixmap(":/icons/icons/beautify.png"));
+    main->addToolBarButton(&EditorController::showSynsetInfo, "Info",  QPixmap());
     main->addToolBarSpacer();
     main->addToolBarButton(&showSettings, "Settings",  QPixmap(":/icons/icons/Settings.png"));
 

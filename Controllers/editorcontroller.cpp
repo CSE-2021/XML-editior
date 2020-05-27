@@ -80,7 +80,6 @@ QSyntaxHighlighter* EditorController::Highlighter(QString &type){
 }
 
 void EditorController::setSyntaxController(QString &type, Editor *e, EditorFile *efile){
-
     if(!type.compare("xml")){
         XMLController *controller = new XMLController(e, efile->filePath);
         efile->langController = controller;
@@ -89,5 +88,15 @@ void EditorController::setSyntaxController(QString &type, Editor *e, EditorFile 
         connect(e, &Editor::textChanged, controller, &XMLController::onTextChanged);
         connect(e, &Editor::beautify, controller, &XMLController::beautify);
         connect(e, &Editor::minify, controller, &XMLController::minify);
+    }
+}
+
+void EditorController::showSynsetInfo(){
+    EditorFile efile = getActiveEditorFile();
+    if(efile.editor != nullptr){
+        QString fileName = efile.filePath.mid(efile.filePath.lastIndexOf("/")+1);
+        dynamic_cast<XMLController*>(efile.langController)->getBlockTrie();
+        SynsetInfo *s = new SynsetInfo(fileName);
+        s->show();
     }
 }

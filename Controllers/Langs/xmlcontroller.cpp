@@ -55,6 +55,31 @@ void XMLController::beautify(){
 
 }
 
+void traverseTree(Block *root, Trie<Block*> *trie){
+    if(!root->getName().compare("synset")){
+        QString word;
+        for(Block *b : *(root->getValue())){
+            if(b->getName() == "word"){
+                word = (*(b->getValue()))[0]->getName();
+                break;
+            }
+        }
+        trie->add(word, root);
+    }
+    if(root->getValue() != nullptr)
+        for(Block *b : *(root->getValue())) traverseTree(b, trie);
+}
+
+Trie<Block*>* XMLController::getBlockTrie(){
+    Trie<Block*> *trie = new Trie<Block*>();
+    QString content = editor->document()->toPlainText();
+    DataTree tree(content);
+    Block *root = tree.getRoot();
+    traverseTree(root, trie);
+    qDebug() << trie->getStrings();
+
+}
+
 QString XMLController::_buildXML(QList<QPair<Info, int>> &queue){
     QString xml = "";
     QVector<QPair<Info, int> > stack;

@@ -7,6 +7,7 @@
 #include "../Highlighter/xmlHighlighter.h"
 #include "Langs/langcontroller.h"
 #include "Langs/xmlcontroller.h"
+#include "GUI/synsetinfo.h"
 #include <QObject>
 #include <QSyntaxHighlighter>
 #include <QAbstractItemModel>
@@ -24,6 +25,7 @@ public:
     static void registerMainWindow(MainWindow*);
     static bool addEditor(QString path);
     static void closeEditor(int index);
+    static void showSynsetInfo();
     static EditorFile getActiveEditorFile();
 
 private:

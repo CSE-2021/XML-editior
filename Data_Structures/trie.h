@@ -7,13 +7,6 @@
 template<typename T>
 class Trie
 {
-private:
-    TrieNode<T> *root;
-    QStringList *getStringsResult;
-    void add(QString str, T value, TrieNode<T> *node, int letterIndex);
-    bool contains(QString str, TrieNode<T> *node, int letterIndex);
-    void getStrings(TrieNode<T> *node, QString startString);
-
 public:
     Trie();
     void add(QString str, T value);
@@ -23,6 +16,14 @@ public:
     QStringList *getStrings();
     QStringList *stringsStartWith(QString theStartString);
     void stringsStartWith(QString theStartString, TrieNode<T> *node, int letterIndex);
+
+private:
+    TrieNode<T> *root;
+    QStringList *getStringsResult;
+    void add(QString str, T value, TrieNode<T> *node, int letterIndex);
+    bool contains(QString str, TrieNode<T> *node, int letterIndex);
+    void getStrings(TrieNode<T> *node, QString startString);
+
 };
 
 template<typename T>
